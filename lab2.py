@@ -270,3 +270,32 @@ def generateRegularGraphNP(nodes, level, probability=None):
 
                 if all(sequence[i] == level for i in range(len(sequence))):
                     return neighbourList
+                
+
+# draw graphs
+
+def draw_graph_NL_EL(data, inputType="NL"):
+    G = nx.Graph()
+    if inputType == "NL":
+        G.add_nodes_from(range(1, len(data) + 1))
+        G.add_edges_from([(index, neighbour) for index, neighbours in enumerate(data) for neighbour in neighbours])
+    elif inputType == "EL":
+        G.add_edges_from(data)
+        G.add_nodes_from(range(1, len(data) + 1))
+    pos = nx.circular_layout(G)
+    node_labels = {i: i for i in range(1, len(data) + 1)}
+    nx.draw(
+        G,
+        pos=pos,
+        node_size=1000,
+        node_color="#d9d9ff",
+        node_shape="o",
+        linewidths=1.0,
+        edgecolors="#1414ff",
+        edge_color="#000",
+        width=2,
+        labels=node_labels,
+        font_size=16.0,
+        font_color="#000",
+    )
+    plt.show()
