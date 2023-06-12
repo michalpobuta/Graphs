@@ -16,6 +16,19 @@ def save_data(data, file_name):
     with open(f"{file_name}.csv", "a+") as f:
         np.savetxt(fr"data\{file_name}.csv", data, delimiter=";", fmt='%i')
 
+def save_weighted_data(G, filename):
+    adjacency_matrix = nx.to_numpy_array(G)
+    weights = np.array([G.edges[u, v]['weight'] for u, v in G.edges()])
+    np.savetxt(f"{filename}_adj.csv", adjacency_matrix, delimiter=";")
+    np.savetxt(f"{filename}_weights.csv", weights, delimiter=";")
+
+def load_weighted_data(filename):
+    adjacency_matrix = np.genfromtxt(f"{filename}_adj.csv", delimiter=";")
+    weights = np.genfromtxt(f"{filename}_weights.csv", delimiter=";")
+    G = nx.from_numpy_array(adjacency_matrix)
+    for i, (u, v) in enumerate(G.edges()):
+        G.edges[u, v]['weight'] = weights[i]
+    return G
 
 def change_encoding(data, data_module, expected_module):
     # 1 -> macierz sąsiedztwa
